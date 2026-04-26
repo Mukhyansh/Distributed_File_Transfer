@@ -138,9 +138,3 @@ This project demonstrates:
 
 Mukhyansh
 
-```
-
----
-
-**Vocabulary:** *Cohesive* — forming a unified and logically connected whole.
-```
