@@ -7,6 +7,6 @@
 
 void chunk_the_file(char *filename);
 
-void reconstruct_the_file(char filenames[MAX_CHUNKS][10]);
+void reconstruct_from_metadata(char* filename);
 
 #endif

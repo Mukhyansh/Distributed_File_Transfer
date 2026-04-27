@@ -1,0 +1,7 @@
+filename:test.txt
+filesize:559
+chunks:4
+chunk0:1.txt
+chunk1:2.txt
+chunk2:3.txt
+chunk3:4.txt
