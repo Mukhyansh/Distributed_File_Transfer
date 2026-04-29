@@ -3,7 +3,7 @@
 #include<string.h>
 #include<malloc.h>
 #include<time.h>
-#include "chunking.h"
+#include "ActualChunking.h"
 #include<unistd.h>
 #include<sys/types.h>
 #include<netinet/in.h>
@@ -37,6 +37,8 @@ void chunk_the_file(char* filename){
 	    fclose(fp);
 	    return;
 	}
+
+	// printf("Check");
 	
 	long s=size/MAX_CHUNKS;
 
@@ -52,6 +54,7 @@ void chunk_the_file(char* filename){
 		if(ch==EOF) break;
 		fputc(ch,f2);
 	}
+	// printf("Check");
 	
 	fseek(fp,2*s,SEEK_SET);
 
@@ -68,7 +71,7 @@ void chunk_the_file(char* filename){
 		if(ch==EOF) break;
 		fputc(ch,f4);
 	}	
-
+	// printf("Check");
 	char* chunk_names[MAX_CHUNKS] = {"1.txt","2.txt","3.txt","4.txt"};
 
 	fclose(fp);
@@ -92,38 +95,64 @@ void chunk_the_file(char* filename){
 	
 }
 
-void reconstruct_from_metadata(){
-    FILE* meta = fopen("metadata.txt", "r");
+void reconstruct_from_metadata(char* output_filename){
+    FILE* meta=fopen("metadata.txt", "r");
     if (!meta) {
         perror("Metadata missing");
         return;
     }
-
+	char line[50];
     char key[50], value[100];
     char chunk_files[MAX_CHUNKS][100];
-    char output_name[100] = "output.txt";
+    char output_name[100]="output.txt";
     int chunk_count = 0;
+	int total_chunks=0;
 
-    while (fscanf(meta, "%[^:]:%s\n", key, value) != EOF) {
-        if (strcmp(key, "filename") == 0) {
-            strcpy(output_name, value);
-        }
-        else if (strncmp(key, "chunk", 5) == 0) {
-            strcpy(chunk_files[chunk_count++], value);
-        }
-    }
+	// printf("Check1");
+
+	while (fgets(line, sizeof(line), meta)){
+		line[strcspn(line,"\n")]=0;
+		char* colon=strchr(line,':');
+		if(!colon) continue;
+
+		int keyl=colon-line;
+		strncpy(key,line,keyl);
+		key[keyl]=0;
+		strcpy(value,colon+1);
+		
+		if(strcmp(key,"chunks")==0){
+			total_chunks=atoi(value);
+		}
+		else if(strncmp(key,"chunks",5)==0){
+			if(chunk_count<MAX_CHUNKS){
+				strcpy(chunk_files[chunk_count],value);
+				chunk_count++;
+			}
+		}
+	}
 
     fclose(meta);
+	char* final;
+	if(output_filename!=""){
+		final=output_filename;
+	} 
+	else final="output.txt";
 
-    FILE* out = fopen(output_name, "wb");
+	if(chunk_count==0){
+		fprintf(stderr,"Error lol");
+		return;
+	}
+
+	puts("Reconstructing the file! Wait please.");
+    FILE* out = fopen(final, "wb");
     if (!out) {
         perror("Error creating output file");
         return;
     }
 
-    for(int i = 0; i < chunk_count; i++){
-        FILE* in = fopen(chunk_files[i], "rb");
-        if (!in) {
+    for(int i=0;i<chunk_count;i++){
+        FILE* in=fopen(chunk_files[i], "rb");
+        if(!in){
             perror("Missing chunk file");
             fclose(out);
             return;
@@ -133,9 +162,18 @@ void reconstruct_from_metadata(){
         while((ch = fgetc(in))!=EOF){
             fputc(ch,out);
         }
+		// printf("Check");
 
         fclose(in);
     }
 
     fclose(out);
+	printf("DONE!\n");
+}
+
+int main(void){
+    chunk_the_file("test.txt");
+	// printf("Check");
+    reconstruct_from_metadata("lolol.txt");
+    return 0;
 }
