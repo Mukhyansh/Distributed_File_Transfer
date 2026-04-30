@@ -1,16 +1,26 @@
-# Distributed_File_Transfer
+# Distributed File Transfer System
 
-A Distributed File transfer System with self-implemented File compressor written in C.
+A distributed file transfer system with a self-implemented file compression module written in C.
+
+---
 
 ## Modules
 
--First is the chunking module which obv chunk the files into a constant fixed size of 4 and then the reconstruct method reconstructs the file with the broken chunks of the file.
+### 1. Chunking Module
+- Splits a file into fixed-size chunks (size = 4 units).
+- Reconstructs the original file from the generated chunks.
 
--Second is the Compressor module which compresses those chunks and then the decompress method comes into play and decompresses the compressed files.
+### 2. Compression Module
+- Compresses each chunk individually.
+- Decompresses chunks back to their original form.
 
--Third is the File Transfer module which sends the chunked and compressed file to another port/ip through sockets and tcp.
+### 3. File Transfer Module
+- Sends compressed chunks over a network using TCP sockets.
+- Supports transfer via IP address and port.
 
--Fourth is the terminal chat, not sure how this will come into place but will try my best to integrate it to the system.
+### 4. Terminal Chat Module
+- Basic terminal-based chat system.
+- Planned for integration with the file transfer workflow.
  
 
 -**Still incomplete, only thing left is linking of all the files and modules through headers(hopefully).**
