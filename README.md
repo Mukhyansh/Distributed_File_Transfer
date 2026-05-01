@@ -23,4 +23,4 @@ A distributed file transfer system with a self-implemented file compression modu
 - Planned for integration with the file transfer workflow.
  
 
--**Still incomplete, only thing left is linking of all the files and modules through headers(hopefully).**
+-**Still incomplete, only thing left is linking of all the files and modules through headers(hopefully lol).**
