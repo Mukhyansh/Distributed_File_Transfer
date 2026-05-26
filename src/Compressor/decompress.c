@@ -32,14 +32,14 @@ static inline void write_contents_to_file(FILE *file,char *buffer,unsigned int s
 	fwrite(buffer,sizeof(char)*size,1,file);
 }
 
-int main(void){
-	FILE *input_file=fopen("compressed.dat","r");
+int main(int argc,char* argv[]){
+	FILE *input_file=fopen(argv[1],"rb");
 	if(!input_file){
 		printf("Failed opening input file.\n");
 		return 1;
 	}
 
-	FILE *output_file=fopen("decompressed.dat","wb");
+	FILE *output_file=fopen(argv[2],"wb");
 	if(!output_file){
 		printf("Failed opening output file.\n");
 		return 1;

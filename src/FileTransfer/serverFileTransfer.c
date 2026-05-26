@@ -52,7 +52,7 @@ int main(int argc,char* argv[]){
     }
 
     FILE* fp;
-    fp=fopen("Hello_gathered.txt","w");
+    fp=fopen(argv[2],"wb");
     if(fp==NULL){
         error("File open failed!");
     }

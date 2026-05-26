@@ -11,14 +11,14 @@ static inline void write_code_to_file(FILE *file,uint32_t code,size_t bytes_per_
 	fwrite(&code,bytes_per_code,1,file);
 }
 
-int main(void){
-	FILE *input_file=fopen("1.txt","r");
+int main(int argc,char* argv[]){
+	FILE *input_file=fopen(argv[1],"rb");
 	if(!input_file){
 		printf("Failed opening input file.\n");
 		return 1;
 	}
 
-	FILE *output_file=fopen("compressed.dat","wb");
+	FILE *output_file=fopen(argv[2],"wb");
 	if(!output_file){
 		printf("Failed opening output file.\n");
 		return 1;

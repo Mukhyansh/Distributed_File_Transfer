@@ -11,8 +11,6 @@ typedef struct trie{
 	bool isleaf;
 }trie;
 
-
-
 trie* maketrie(){
 	trie* newnode=(trie*)malloc(sizeof(trie));
 	for(unsigned int i=0;i<MAX;i++){
@@ -45,8 +43,6 @@ void insertchar(trie* root,unsigned char ch,uint32_t val){
 	temp->isleaf=true;
 	temp->value=val;
 }
-
-
 
 bool searchchar(trie* root, unsigned char ch, trie** node) {
 	uint32_t idx=ch;

@@ -49,7 +49,7 @@ int main(int argc,char* argv[]){
     }
     
     FILE* f;
-    f=fopen("Hello.txt","r");
+    f=fopen(argv[3],"rb");
     if(f==NULL){
         error("File open failed!\n");
     }
