@@ -1,1 +1,1 @@
-#This is a Test repostiroy which inlcudes all the files which were used in the testing of this project.
+#This is a Test repositroy which inlcudes all the files which were used in the testing of this project.

@@ -5,30 +5,36 @@
 #include<unistd.h>
 
 int main(int argc,char* argv[]){
-    printf("Step 1: Chunking\n");
-    system("./chunk");
-    printf("STEP 2: Compressing\n");
 
-    system("./compress src/Chunking/1.txt src/Compressor/1.dat");
-    system("./compress src/Chunking/2.txt src/Compressor/2.dat");
-    system("./compress src/Chunking/3.txt src/Compressor/3.dat");
-    system("./compress src/Chunking/4.txt src/Compressor/4.dat");
+    printf("File Chunking check\n");
+    system("./src/Chunking/chunk");
 
-    printf("STEP 3: Transfer\n");
+    printf("File compression check\n");
 
-    system("./client 127.0.0.1 8080 1.dat");
-    system("./client 127.0.0.1 8081 2.dat");
-    system("./client 127.0.0.1 8082 3.dat");
-    system("./client 127.0.0.1 8083 4.dat");
+    system("./src/Compressor/compress src/Chunking/1.txt src/Compressor/1.dat");
+    system("./src/Compressor/compress src/Chunking/2.txt src/Compressor/2.dat");
+    system("./src/Compressor/compress src/Chunking/3.txt src/Compressor/3.dat");
+    system("./src/Compressor/compress src/Chunking/4.txt src/Compressor/4.dat");
 
-    printf("STEP 4: Decompressing\n");
+    printf("File transfer check\n");
 
-    system("./decompress received1.dat out1.txt");
-    system("./decompress received2.dat out2.txt");
-    system("./decompress received3.dat out3.txt");
-    system("./decompress received4.dat out4.txt");
+    system("./src/FileTransfer/client 127.0.0.1 8080 src/Compressor/1.dat");
+    system("./src/FileTransfer/client 127.0.0.1 8081 src/Compressor/2.dat");
+    system("./src/FileTransfer/client 127.0.0.1 8082 src/Compressor/3.dat");
+    system("./src/FileTransfer/client 127.0.0.1 8083 src/Compressor/4.dat");
 
-    printf("DONE!\n");
+    printf("Decompressing check\n");
+
+    system("./src/Compressor/decompress src/FileTransfer/received1.dat src/Chunking/out1.txt");
+    system("./src/Compressor/decompress src/FileTransfer/received2.dat src/Chunking/out2.txt");
+    system("./src/Compressor/decompress src/FileTransfer/received3.dat src/Chunking/out3.txt");
+    system("./src/Compressor/decompress src/FileTransfer/received4.dat src/Chunking/out4.txt");
+
+    printf("Reconstructing the file!\n");
+
+    system("./src/Chunking/reconstruct");
+
+    printf("Done!\n");
 
     return 0;
 }

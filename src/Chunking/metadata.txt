@@ -1,7 +1,7 @@
-filename:test.txt
+filename:src/Chunking/test.txt
 filesize:140
 chunks:4
-chunk0:1.txt
-chunk1:2.txt
-chunk2:3.txt
-chunk3:4.txt
+chunk0:src/Chunking/1.txt
+chunk1:src/Chunking/2.txt
+chunk2:src/Chunking/3.txt
+chunk3:src/Chunking/4.txt
