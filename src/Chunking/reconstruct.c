@@ -8,7 +8,7 @@ int main(){
     FILE *f3=fopen("src/Chunking/out3.txt","rb");
     FILE *f4=fopen("src/Chunking/out4.txt","rb");
 
-    FILE *out=fopen("src/Chunking/final_output.txt","wb");
+    FILE *out=fopen("final_output.txt","wb");
     if(!f1 || !f2 || !f3 || !f4 || !out){
         printf("File opening failed.\n");
         return 1;
