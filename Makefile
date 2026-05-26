@@ -2,35 +2,42 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2 -std=c99
 LDFLAGS = -lm
 
-# Directories
 SRC_DIR = src
-BIN_DIR = bin
-OBJ_DIR = obj
 
-# Create bin directory if it doesn't exist
-$(shell mkdir -p $(BIN_DIR) $(OBJ_DIR))
+CHUNK = $(SRC_DIR)/Chunking/chunk
+RECONSTRUCT = $(SRC_DIR)/Chunking/reconstruct
 
-# Targets
-COMPRESS = $(BIN_DIR)/compress
-DECOMPRESS = $(BIN_DIR)/decompress
-SERVER_CHAT = $(BIN_DIR)/server_chat
-CLIENT_CHAT = $(BIN_DIR)/client_chat
-SERVER_FILE = $(BIN_DIR)/server_file
-CLIENT_FILE = $(BIN_DIR)/client_file
+COMPRESS = $(SRC_DIR)/Compressor/compress
+DECOMPRESS = $(SRC_DIR)/Compressor/decompress
 
-# Source files
+SERVER_FILE = $(SRC_DIR)/FileTransfer/server
+CLIENT_FILE = $(SRC_DIR)/FileTransfer/client
+
+MAIN = main
+
+CHUNK_SRC = $(SRC_DIR)/Chunking/ActualChunking.c
+RECONSTRUCT_SRC = $(SRC_DIR)/Chunking/reconstruct.c
+
 COMPRESS_SRC = $(SRC_DIR)/Compressor/compress.c
 DECOMPRESS_SRC = $(SRC_DIR)/Compressor/decompress.c
-SERVER_CHAT_SRC = $(SRC_DIR)/TerminalChat/ServerSocket.c
-CLIENT_CHAT_SRC = $(SRC_DIR)/TerminalChat/ClientSocket.c
+
 SERVER_FILE_SRC = $(SRC_DIR)/FileTransfer/serverFileTransfer.c
 CLIENT_FILE_SRC = $(SRC_DIR)/FileTransfer/clientFileTransfer.c
 
-# Phony targets
+MAIN_SRC = main.c
+
 .PHONY: all clean help
 
-all: $(COMPRESS) $(DECOMPRESS) $(SERVER_CHAT) $(CLIENT_CHAT) $(SERVER_FILE) $(CLIENT_FILE)
-	@echo "All targets built successfully!"
+all: $(CHUNK) $(RECONSTRUCT) $(COMPRESS) $(DECOMPRESS) $(SERVER_FILE) $(CLIENT_FILE) $(MAIN)
+	@echo "Build complete!"
+
+$(CHUNK): $(CHUNK_SRC)
+	@echo "Building chunk..."
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+
+$(RECONSTRUCT): $(RECONSTRUCT_SRC)
+	@echo "Building reconstruct..."
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
 $(COMPRESS): $(COMPRESS_SRC)
 	@echo "Building compress..."
@@ -40,40 +47,63 @@ $(DECOMPRESS): $(DECOMPRESS_SRC)
 	@echo "Building decompress..."
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
-$(SERVER_CHAT): $(SERVER_CHAT_SRC)
-	@echo "Building server_chat..."
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
-
-$(CLIENT_CHAT): $(CLIENT_CHAT_SRC)
-	@echo "Building client_chat..."
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
-
 $(SERVER_FILE): $(SERVER_FILE_SRC)
-	@echo "Building server_file..."
+	@echo "Building server..."
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
 $(CLIENT_FILE): $(CLIENT_FILE_SRC)
-	@echo "Building client_file..."
+	@echo "Building client..."
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+
+$(MAIN): $(MAIN_SRC)
+	@echo "Building main..."
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
 clean:
-	@echo "Cleaning up..."
-	rm -rf $(BIN_DIR) $(OBJ_DIR)
-	rm -f *.o *.dat *.bin
+	@echo "Cleaning generated files..."
+
+	rm -f $(CHUNK)
+	rm -f $(RECONSTRUCT)
+
+	rm -f $(COMPRESS)
+	rm -f $(DECOMPRESS)
+
+	rm -f $(SERVER_FILE)
+	rm -f $(CLIENT_FILE)
+
+	rm -f $(MAIN)
+
+	rm -f $(SRC_DIR)/Chunking/1.txt
+	rm -f $(SRC_DIR)/Chunking/2.txt
+	rm -f $(SRC_DIR)/Chunking/3.txt
+	rm -f $(SRC_DIR)/Chunking/4.txt
+
+	rm -f $(SRC_DIR)/Chunking/out1.txt
+	rm -f $(SRC_DIR)/Chunking/out2.txt
+	rm -f $(SRC_DIR)/Chunking/out3.txt
+	rm -f $(SRC_DIR)/Chunking/out4.txt
+
+	rm -f $(SRC_DIR)/Chunking/final_output.txt
+	rm -f $(SRC_DIR)/Chunking/metadata.txt
+
+	rm -f $(SRC_DIR)/Compressor/*.dat
+
+	rm -f $(SRC_DIR)/FileTransfer/received1.dat
+	rm -f $(SRC_DIR)/FileTransfer/received2.dat
+	rm -f $(SRC_DIR)/FileTransfer/received3.dat
+	rm -f $(SRC_DIR)/FileTransfer/received4.dat
+
 	@echo "Clean complete!"
 
 help:
-	@echo "Distributed File Transfer System - Build Help"
-	@echo "=============================================="
-	@echo "Targets:"
-	@echo "  make all          - Build all programs"
-	@echo "  make clean        - Remove all built files"
-	@echo "  make help         - Show this help message"
+	@echo "Distributed File Transfer System"
 	@echo ""
-	@echo "Programs Built:"
-	@echo "  compress          - File compression utility"
-	@echo "  decompress        - File decompression utility"
-	@echo "  server_chat       - Terminal chat server"
-	@echo "  client_chat       - Terminal chat client"
-	@echo "  server_file       - File transfer server"
-	@echo "  client_file       - File transfer client"
+	@echo "Targets:"
+	@echo "  make        - Build everything"
+	@echo "  make all    - Build everything"
+	@echo "  make clean  - Remove executables and generated files"
+	@echo "  make help   - Show this help"
+
+
+
+	#This make file is basically useless atp because of the main.c file in the main folder lol.

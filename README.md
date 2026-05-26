@@ -21,6 +21,11 @@ A distributed file transfer system with a self-implemented file compression modu
 ### 4. Terminal Chat Module
 - Basic terminal-based chat system.
 - Planned for integration with the file transfer workflow.
+
+### 5. HOW TO RUN
+- Go to the main folder(Distributed_File_Transfer).
+- Compile the main file with the flag main ( gcc main.c -o main ).
+- Execute the main file ( ./main ).
  
 
--**Still incomplete, only thing left is linking of all the files and modules through headers(hopefully lol).**
+-**This is just a hardcoded simulation of the actual process which happens behind the curtains on our distributed systems!**
