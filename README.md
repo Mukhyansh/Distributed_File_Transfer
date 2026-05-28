@@ -23,6 +23,7 @@ A distributed file transfer system with a self-implemented file compression modu
 - Planned for integration with the file transfer workflow.
 
 ### 5. HOW TO RUN
+- Open up 4 terminal instances, Navigate to the FileTransfer folder and run this command (./server 808i receivedk.dat) where i=[0,3] and k=[1,4].
 - Go to the main folder(Distributed_File_Transfer).
 - Compile the main file with the flag main ( gcc main.c -o main ).
 - Execute the main file ( ./main ).
